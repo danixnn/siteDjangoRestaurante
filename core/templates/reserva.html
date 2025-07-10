@@ -1,0 +1,81 @@
+{% extends 'base.html '%}
+{% load static %}
+{% block content %}
+
+    <header id="gtco-header" class="gtco-cover gtco-cover-md" role="banner" style="background-image: url({% static 'images/img_bg_1.jpg' %})" data-stellar-background-ratio="0.5">
+       <div class="overlay"></div>
+       <div class="gtco-container">
+          <div class="row">
+             <div class="col-md-12 col-md-offset-0 text-left">
+
+
+                <div class="row row-mt-15em">
+
+                      <div class="form-wrap">
+                         <div class="tab">
+
+                            <div class="tab-content">
+                               <div class="tab-content-inner active" data-content="signup">
+                                  <h3 class="cursive-font">Table Reservation</h3>
+                                  <form action="#"> {# Left as # as it was an action placeholder #}
+                                     <div class="row form-group">
+                                        <div class="col-md-12">
+                                           <label for="nome">Nome</label>
+                                           <input type="text" id="nome" name="nome" class="form-control">
+                                        </div>
+                                     </div>
+
+                                     <div class="row form-group">
+                                        <div class="col-md-12">
+                                           <label for="telefone">Telefone</label>
+                                           <input type="text" id="telefone" name="telefone" class="form-control">
+                                        </div>
+                                     </div>
+
+                                     <div class="row form-group">
+                                        <div class="col-md-12">
+                                           <label for="activities">Persons</label>
+                                           <select name="#" id="activities" class="form-control">
+                                              <option value="null">Persons</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5+</option>
+                                           </select>
+                                        </div>
+                                     </div>
+                                     <div class="row form-group">
+                                        <div class="col-md-12">
+                                           <label for="date-start">Date</label>
+                                           <input type="text" id="date" class="form-control">
+                                        </div>
+                                     </div>
+                                     <div class="row form-group">
+                                        <div class="col-md-12">
+                                           <label for="date-start">Hora</label>
+                                           <input type="text" id="time" class="form-control">
+                                        </div>
+                                     </div>
+
+                                     <div class="row form-group">
+                                        <div class="col-md-12">
+                                           <input type="submit" class="btn btn-primary btn-block" value="Reserve Agora">
+                                        </div>
+                                     </div>
+                                  </form>
+                               </div>
+
+
+                            </div>
+                         </div>
+                      </div>
+
+                </div>
+
+
+             </div>
+          </div>
+       </div>
+    </header>
+{% endblock %}
