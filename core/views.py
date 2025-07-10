@@ -2,35 +2,33 @@ from django.views.generic import TemplateView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
 
-from .models import Menu, Servicos, Sub
-from .forms import SubForm
+from .models import Menu, Servicos, Sub, Reserva
+from .forms import SubForm, ContatoForm, ReservaForm
 
 
 class IndexView(FormView):
     template_name = 'index.html'
     form_class = SubForm
-    success_url = reverse_lazy('index.html')
+    success_url = reverse_lazy('index')
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['menu'] = Menu.objects.order_by('?')
-        context['servicos'] = Servicos.objects.all()
+        context['servicos'] = Servicos.objects.order_by('?')
 
         return context
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        try:
-            if not Sub.objects.filter(email=email).exists():
-                Sub.objects.create(email=email)
-                messages.success(self.request, 'Email criado com sucesso!')
-                return self.form_valid(form)
-            else:
-                messages.info(self.request, 'O email já está subscrito!')
-                return self.render_to_response(self.get_context_data(form=form))
-        except:
-            messages.error(self.request, 'Ocorreu um erro!')
-            return self.form_invalid(form)
+
+        if not Sub.objects.filter(email=email).exists():
+            Sub.objects.create(email=email)
+            messages.success(self.request, 'Email inscrito com sucesso!')
+            return super().form_valid(form)
+        else:
+            messages.info(self.request, 'O email já está subscrito!')
+            return self.render_to_response(self.get_context_data(form=form))
+
 
     def form_invalid(self, form):
         messages.error(self.request, 'Erro no email!')
@@ -44,3 +42,51 @@ class MenuView(TemplateView):
         context['menu'] = Menu.objects.all()
 
         return context
+
+class ServicoView(TemplateView):
+    template_name = 'services.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ServicoView, self).get_context_data(**kwargs)
+        context['servicos'] = Servicos.objects.all()
+
+        return context
+
+class ContatoView(FormView):
+    template_name = 'contact.html'
+    form_class = ContatoForm
+    success_url = reverse_lazy('contato')
+
+    def form_valid(self, form):
+        form.send_mail()
+        messages.success(self.request, 'Mensagem enviada com sucesso!')
+        return super(ContatoView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Erro ao enviar mensagem!')
+        return super(ContatoView, self).form_invalid(form)
+
+class ReservaView(FormView):
+    template_name = 'reserva.html'
+    form_class = ReservaForm
+    success_url = reverse_lazy('reserva')
+
+    def form_valid(self, form):
+        nome = form.cleaned_data['nome']
+        telefone = form.cleaned_data['telefone']
+        pessoas = form.cleaned_data['pessoas']
+        date = form.cleaned_data['date']
+        time = form.cleaned_data['time']
+
+        print('------------------------------------')
+        print(nome, telefone, pessoas, date, time)
+        print('------------------------------------')
+
+        form.save()
+
+        messages.success(self.request, 'Reserva enviada, aguarde ligação!')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Ocorreu algum erro! Verifique os campos!')
+        return super().form_invalid(form)

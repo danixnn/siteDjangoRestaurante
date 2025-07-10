@@ -17,7 +17,8 @@
                             <div class="tab-content">
                                <div class="tab-content-inner active" data-content="signup">
                                   <h3 class="cursive-font">Table Reservation</h3>
-                                  <form action="#"> {# Left as # as it was an action placeholder #}
+                                  <form action="{% url 'reserva' %}" method="post">
+                                     {% csrf_token %}
                                      <div class="row form-group">
                                         <div class="col-md-12">
                                            <label for="nome">Nome</label>
@@ -34,9 +35,9 @@
 
                                      <div class="row form-group">
                                         <div class="col-md-12">
-                                           <label for="activities">Persons</label>
-                                           <select name="#" id="activities" class="form-control">
-                                              <option value="null">Persons</option>
+                                           <label for="pessoas">Pessoas</label>
+                                           <select name="pessoas" id="pessoas" class="form-control">
+                                              <option value="null">Pessoas</option>
                                               <option value="1">1</option>
                                               <option value="2">2</option>
                                               <option value="3">3</option>
@@ -47,14 +48,14 @@
                                      </div>
                                      <div class="row form-group">
                                         <div class="col-md-12">
-                                           <label for="date-start">Date</label>
-                                           <input type="text" id="date" class="form-control">
+                                           <label for="date">Data</label>
+                                           <input type="text" id="date" name="date" class="form-control">
                                         </div>
                                      </div>
                                      <div class="row form-group">
                                         <div class="col-md-12">
                                            <label for="date-start">Hora</label>
-                                           <input type="text" id="time" class="form-control">
+                                           <input type="text" id="time" name="time" class="form-control">
                                         </div>
                                      </div>
 
@@ -68,6 +69,20 @@
 
 
                             </div>
+
+                            <div>
+      				          {% if messages %}
+      				          {% for message  in messages %}
+                               <div class="alert alert-{{ message.tags }}">
+         				         <button type="button" class="close" data-dismiss="alert">
+            				        <span aria-hidden="true">&times;</span>
+         				         </button>
+         					     <strong>{{ message  }}</strong>
+                               </div>
+      				          {% endfor %}
+      				          {% endif %}
+                            </div>
+
                          </div>
                       </div>
 

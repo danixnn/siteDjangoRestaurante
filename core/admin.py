@@ -13,7 +13,7 @@ class ServicosAdmin(admin.ModelAdmin):
 
 @admin.register(Reserva)
 class ReservaAdmin(admin.ModelAdmin):
-    list_display = ['nome', 'telefone', 'data', 'horario']
+    list_display = ['nome', 'telefone', 'date', 'time']
 
 @admin.register(Sub)
 class SubAdmin(admin.ModelAdmin):

@@ -51,8 +51,8 @@ class Reserva(Base):
     nome = models.CharField('Nome', max_length=80)
     telefone = models.CharField('Telefone', max_length=20)
     pessoas = models.IntegerField('Quantidade de Pessoas')
-    data = models.DateField('Data da reserva')
-    horario = models.TimeField('Hora da reserva')
+    date = models.DateField('Data da reserva')
+    time = models.TimeField('Hora da reserva')
     Base.ativo = False
 
     class Meta:
@@ -60,7 +60,7 @@ class Reserva(Base):
         verbose_name_plural = 'Reservas'
 
     def __str__(self):
-        return f'Nome {self.nome} Telefone {self.telefone} Quantidade {self.pessoas} Data {self.data} Horario {self.horario}'
+        return f'Nome {self.nome} Telefone {self.telefone} Quantidade {self.pessoas} Data {self.date} Horario {self.time}'
 
 class Sub(Base):
     email = models.EmailField('Email do sub')
