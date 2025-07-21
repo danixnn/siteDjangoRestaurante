@@ -1,9 +1,17 @@
-from django.views.generic import TemplateView, FormView
+import datetime
+from http.client import responses
+
+from django.views.generic import TemplateView, FormView, View
 from django.urls import reverse_lazy
 from django.contrib import messages
 
+from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Menu, Servicos, Sub, Reserva
 from .forms import SubForm, ContatoForm, ReservaForm
+
+import csv
+from datetime import date
 
 
 class IndexView(FormView):
@@ -90,3 +98,58 @@ class ReservaView(FormView):
     def form_invalid(self, form):
         messages.error(self.request, 'Ocorreu algum erro! Verifique os campos!')
         return super().form_invalid(form)
+
+class AcessoAdmView(TemplateView):
+    template_name = 'acessoadm.html'
+
+
+class DownloadEmailsView(View, LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def get(self, request, *args, **kwargs):
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename = "lista_emails.csv"'
+
+        writer = csv.writer(response)
+
+        writer.writerow(['ID','Email'])
+
+        emails = Sub.objects.all().order_by('id')
+
+        for email in emails:
+            writer.writerow([
+                email.id,
+                email.email
+            ])
+
+        return response
+
+class DownloadReservasView(View, LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def get(self, request, *args, **kwargs):
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename = "lista_reservas.csv"'
+
+        data_atual = date.today()
+
+        writer = csv.writer(response)
+        writer.writerow(['ID', 'Nome', 'Telefone', 'Pessoas', 'Data', 'Hora', 'Foi agendado?'])
+
+        reservas = Reserva.objects.filter(date__gte = data_atual).order_by('date', 'time')
+
+        for res in reservas:
+            writer.writerow([
+                res.id,
+                res.nome,
+                res.telefone,
+                res.pessoas,
+                res.date.strftime("%d-%m-%Y"),
+                res.time.strftime("%H:%M")
+            ])
+
+        return response

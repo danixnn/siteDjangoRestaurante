@@ -53,7 +53,6 @@ class Reserva(Base):
     pessoas = models.IntegerField('Quantidade de Pessoas')
     date = models.DateField('Data da reserva')
     time = models.TimeField('Hora da reserva')
-    Base.ativo = False
 
     class Meta:
         verbose_name = 'Reserva'

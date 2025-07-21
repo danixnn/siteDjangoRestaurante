@@ -65,5 +65,3 @@ class ReservaForm(forms.ModelForm):
     class Meta:
         model = Reserva
         fields = ['nome', 'telefone', 'pessoas', 'date', 'time']
-
-
