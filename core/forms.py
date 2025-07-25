@@ -44,6 +44,23 @@ class ReservaForm(forms.ModelForm):
     date = forms.DateField(label='Data', input_formats=['%d/%m/%Y'])
     time = forms.TimeField(label='Horas', input_formats=['%I:%M %p'])
 
+    def clean_telefone(self):
+        telefone = self.cleaned_data.get('telefone')
+
+        if telefone:
+            numero_limpo = ''
+
+            for i in telefone:
+                if i .isdigit():
+                    numero_limpo = numero_limpo + i
+
+            if not len(numero_limpo) == 11:
+                raise forms.ValidationError('Numero de telefone invalido. Use o DDD + 9 dígitos.')
+
+            return numero_limpo
+
+        return telefone
+
     def clean(self):
         cleaned_data = super().clean()
 
