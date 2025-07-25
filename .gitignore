@@ -1,0 +1,83 @@
+# ============================================================================
+# .gitignore para Projetos Django com PostgreSQL
+# ============================================================================
+
+# 1. Arquivos de Cache e Compilação
+# ----------------------------------------------------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python/
+build/
+develop-eggs/
+dist/
+eggs/
+*.egg-info/
+.installed.cfg
+*.mo
+*.pot
+*.log
+
+# 2. Ambientes Virtuais
+# ----------------------------------------------------------------------------
+# Pastas comuns para ambientes virtuais
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# 3. Arquivos de Mídia (Uploads de Usuários)
+# ----------------------------------------------------------------------------
+# IMPORTANTE: A pasta MEDIA_ROOT deve ser ignorada, pois contém uploads de usuários.
+# Esses arquivos não devem estar no controle de versão.
+# Substitua 'media/' pelo seu valor de MEDIA_ROOT se for diferente.
+media/
+
+# 4. Arquivos Estáticos Gerados (coletados via collectstatic)
+# ----------------------------------------------------------------------------
+# IMPORTANTE: A pasta STATIC_ROOT deve ser ignorada. Esses arquivos são coletados
+# de outras fontes e gerados durante o deploy.
+# Substitua 'staticfiles/' pelo seu valor de STATIC_ROOT se for diferente.
+staticfiles/
+
+# 5. Configurações Locais e Confidenciais
+# ----------------------------------------------------------------------------
+# Este é o MAIS IMPORTANTE para segurança!
+# Nunca comite seu arquivo settings.py com credenciais de produção.
+# Use variáveis de ambiente ou um arquivo local que seja ignorado.
+# Exemplo: Se você tem um arquivo `local_settings.py` com senhas, etc.
+local_settings.py
+.env # Se você usa python-dotenv ou django-environ
+*.ini # Arquivos de configuração como .ini
+*.cfg # Outros arquivos de configuração
+.DS_Store # Arquivos de metadados do macOS
+.idea/ # Pastas de IDEs como PyCharm
+
+# 6. Arquivos de Banco de Dados PostgreSQL (Locais/Temporários)
+# ----------------------------------------------------------------------------
+# Estes são arquivos que podem ser gerados pelo PostgreSQL localmente
+# ou backups temporários. Ajuste conforme sua configuração.
+*.dump
+*.sql
+*.backup
+pgdata/ # Pasta de dados do PostgreSQL (se você rodar o DB localmente, tipo com Docker Volumes)
+
+# 7. Outros Arquivos Temporários ou de Ferramentas
+# ----------------------------------------------------------------------------
+.project
+.pydevproject
+.ropeproject
+.coverage
+.mypy_cache/
+.pytest_cache/
+htmlcov/
+# Para ferramentas de empacotamento
+# Pip-tools
+*.egg
+*.whl
+
+# 8. Arquivos gerados por logs ou depuração
+# ----------------------------------------------------------------------------
+*.log # Ignorar todos os arquivos .log

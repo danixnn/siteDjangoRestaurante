@@ -1,6 +1,3 @@
-import datetime
-from http.client import responses
-
 from django.views.generic import TemplateView, FormView, View
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -10,8 +7,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Menu, Servicos, Sub, Reserva
 from .forms import SubForm, ContatoForm, ReservaForm
 
+from django.views.generic.edit import DeleteView, UpdateView
 import csv
-from datetime import date
 
 
 class IndexView(FormView):
@@ -23,6 +20,7 @@ class IndexView(FormView):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['menu'] = Menu.objects.order_by('?')
         context['servicos'] = Servicos.objects.order_by('?')
+        context['n_pratos'] = Menu.objects.count()
 
         return context
 
@@ -102,6 +100,12 @@ class ReservaView(FormView):
 class AcessoAdmView(TemplateView):
     template_name = 'acessoadm.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(AcessoAdmView, self).get_context_data(**kwargs)
+        context['reserva'] = Reserva.objects.all().order_by('date', 'time')
+
+        return context
+
 
 class DownloadEmailsView(View, LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
@@ -126,30 +130,13 @@ class DownloadEmailsView(View, LoginRequiredMixin, UserPassesTestMixin):
 
         return response
 
-class DownloadReservasView(View, LoginRequiredMixin, UserPassesTestMixin):
-    def test_func(self):
-        return self.request.user.is_staff
+class ReservaDeleteView(DeleteView):
+    model = Reserva
+    success_url = reverse_lazy('acessoadm')
+    template_name = 'confirmar_exclusao.html'
 
-    def get(self, request, *args, **kwargs):
-
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename = "lista_reservas.csv"'
-
-        data_atual = date.today()
-
-        writer = csv.writer(response)
-        writer.writerow(['ID', 'Nome', 'Telefone', 'Pessoas', 'Data', 'Hora', 'Foi agendado?'])
-
-        reservas = Reserva.objects.filter(date__gte = data_atual).order_by('date', 'time')
-
-        for res in reservas:
-            writer.writerow([
-                res.id,
-                res.nome,
-                res.telefone,
-                res.pessoas,
-                res.date.strftime("%d-%m-%Y"),
-                res.time.strftime("%H:%M")
-            ])
-
-        return response
+class ReservaUpdateView(UpdateView):
+    model = Reserva
+    fields = ['pessoas','date', 'time']
+    success_url = reverse_lazy('acessoadm')
+    template_name = 'confirmar_edicao.html'

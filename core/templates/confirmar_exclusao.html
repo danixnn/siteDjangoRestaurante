@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+	<header id="gtco-header" class="gtco-cover gtco-cover-sm" >
+
+	</header>
+
+	<div class="gtco-section">
+		<div class="gtco-container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="col-md-6 animate-box">
+
+                    <h1>Tem certeza que deseja excluir esta reserva?</h1>
+                        <p>Reserva para: {{ object.nome }} na data {{ object.date }} as {{ object.time }}</p>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit">Sim, Excluir</button>
+                            <a href="{% url 'acessoadm' %}">Cancelar</a>
+                        </form>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

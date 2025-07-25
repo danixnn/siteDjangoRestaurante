@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+	<header id="gtco-header" class="gtco-cover gtco-cover-sm" >
+
+	</header>
+
+	<div class="gtco-section">
+		<div class="gtco-container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="col-md-6 animate-box">
+                        <h1>Atualizar Reserva</h1>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit">Salvar Alterações</button>
+                            <a href="{% url 'acessoadm' %}">Cancelar</a>
+                        </form>
+				</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
