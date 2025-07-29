@@ -84,4 +84,5 @@ No Django Admin que já vem padrão, é possivel criar, editar e excluir dados d
 
 ## 🎥 Confira o video
 
-[Projeto Funcionado](https://www.youtube.com/watch?v=o-tWaSky4vk)
+[<img src="https://raw.githubusercontent.com/jacques-blom/jacques-blom/cfa04ee011f40f5650cf30132dff9978e810ed93/assets/0.png" align="left" width="200" />](https://www.youtube.com/watch?v=Y9e7IOETqfY&ab_channel=LucasSaar)
+        **[Projeto Funcionando](https://www.youtube.com/watch?v=o-tWaSky4vk)**
